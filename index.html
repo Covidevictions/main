@@ -1,0 +1,92 @@
+<html>
+<head>
+<title>COVID Evictions</title>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myList2 li").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+$(document).ready(function(){
+	$.getJSON('https://v2-api.sheety.co/cccb1afb3b90fa506c22504e05e6e643/covidEvictions/cities', function(data) {
+		var template = Handlebars.compile($('#cities-template').html())
+		$('#cities').html(template(data.cities))
+	})
+});
+    $(document).ready(function(){
+	$.getJSON('https://v2-api.sheety.co/cccb1afb3b90fa506c22504e05e6e643/covidEvictions/counties', function(data) {
+		var template = Handlebars.compile($('#counties-template').html())
+		$('#counties').html(template(data.counties))
+	})
+});
+        
+  
+   </script>
+    <div class="container mt-5 ">
+        <h1 >Local COVID-Related Eviction Ordinances</h1>
+         <p5>This list is based on a feed produced by <img src="logo.png" class="border-0"><a href="http://www.tenantstogether.org/"> Tenants Together</a></p5>
+        <br>
+        <br>
+        <div class="font-weight-bold p-3 border rounded bg-light"><span class="pl-2 pb-3 ">   Filter list by name:</span>
+  <input class="form-control" id="myInput" type="text" placeholder="Enter name of city or county..">
+  </div>  
+    </div>
+<script id="cities-template" type="text/x-handlebars-template">
+<div>
+     <h2 class="text-muted mt-5">Cities with Local Eviction Protections</h2>
+   
+    
+    <div class="p-2"><a href="#counties">Jump to Counties</a></div>
+<ul class="list-group" id="myList2">
+	{{#each this}}
+		<li  class="list-group-item item list-group-item-action">
+		  <h4>{{#if linkToOrdinance}} <a href="{{linkToOrdinance}}">{{/if}} {{city}}{{#if linkToOrdinance}}</a>{{/if}}</h4>
+		     {{#if typeOfOrdinance}} <strong>Description: </strong>{{typeOfOrdinance}}<br>{{/if}}
+            {{#if effectiveDates}}<strong>Effective Dates: </strong>{{effectiveDates}}{{/if}}
+		</li>
+	{{/each}}
+</ul>
+    </div>
+</script>
+    
+    <script id="counties-template" type="text/x-handlebars-template">
+<div class="container">
+     <h2 class="text-muted p-2">Counties with Local Eviction Protections</h2>
+   <a href="#cities">Back to Cities</a>
+<ul class="list-group pt-3" id="myList2">
+	{{#each this}}
+		<li  class="list-group-item item list-group-item-action">
+		  <h4>{{#if linkToOrdinance}} <a href="{{linkToOrdinance}}">{{/if}} {{county}}{{#if linkToOrdinance}}</a>{{/if}}</h4>
+		 {{#if typeOfOrdinance}} <strong>Description: </strong>{{typeOfOrdinance}}<br>{{/if}}
+            {{#if effectiveDates}}<strong>Effective Dates: </strong>{{effectiveDates}}{{/if}}
+		</li>
+	{{/each}}
+</ul>
+    </div>
+</script>
+   
+</head>
+<body>
+   
+   
+<div class="container" id="cities">Loading List...</div>
+<div id="counties"></div>    
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+   
+    <p> </p>
+    
+</body>
+    
+</html>
